@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnlockPDF</title>
+    <style>
+        :root {
+            --bg: #0f1115;
+            --card: #171a21;
+            --accent: #5b8cff;
+            --text: #e8eaf0;
+            --muted: #9aa1b2;
+            --error: #ff6b6b;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--text);
+            padding: 24px;
+        }
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 32px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin: 0 0 4px;
+        }
+        p.subtitle {
+            color: var(--muted);
+            margin: 0 0 24px;
+            font-size: 0.9rem;
+        }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: var(--muted);
+        }
+        input[type="file"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #2a2e38;
+            background: #10121a;
+            color: var(--text);
+            font-size: 0.95rem;
+            margin-bottom: 18px;
+        }
+        input[type="file"] {
+            padding: 8px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover { opacity: 0.9; }
+        .flash {
+            background: rgba(255,107,107,0.12);
+            border: 1px solid var(--error);
+            color: var(--error);
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 18px;
+        }
+        .note {
+            margin-top: 20px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🔓 UnlockPDF</h1>
+        <p class="subtitle">Remove password protection from a PDF you own.</p>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="flash">{{ msg }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="/unlock" method="post" enctype="multipart/form-data">
+            <label for="pdf_file">PDF file</label>
+            <input type="file" id="pdf_file" name="pdf_file" accept="application/pdf" required>
+
+            <label for="password">Password (leave blank if none)</label>
+            <input type="password" id="password" name="password" placeholder="Enter PDF password">
+
+            <button type="submit">Unlock PDF</button>
+        </form>
+
+        <p class="note">
+            Only use this on PDFs you own or have permission to unlock.
+            Your file is processed in memory and not stored on the server.
+        </p>
+    </div>
+</body>
+</html>
